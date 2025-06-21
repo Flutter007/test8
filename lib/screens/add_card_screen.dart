@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test8/providers/discount_card_provider.dart';
 import 'package:test8/widgets/add_card_form/add_card_form.dart';
-
 import '../providers/images_upload_providers.dart';
 import '../widgets/add_card_form/add_card_form_controllers.dart';
 
@@ -23,24 +22,51 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
   }
 
   void addCard() async {
-    final selectedFrontSide = ref.read(selectedCardFrontSide.notifier).state;
-    print(selectedFrontSide);
-    if (controller.formKey.currentState!.validate() &&
-        selectedFrontSide != null) {
-      final selectedLogo = fileNameGetter(ref.read(selectedShopLogo));
-      final selectedFront = fileNameGetter(ref.read(selectedCardFrontSide));
-      final selectedBack = fileNameGetter(ref.read(selectedCardBackSide));
+    final frontFile = ref.read(selectedCardFrontSide);
+    final logoFile = ref.read(selectedShopLogo);
+    final backFile = ref.read(selectedCardBackSide);
+
+    if (controller.formKey.currentState!.validate() && frontFile != null) {
+      final selectedLogo = fileNameGetter(logoFile);
+      final selectedFront = fileNameGetter(frontFile);
+      final selectedBack = fileNameGetter(backFile);
+
+      try {
+        await upload(frontFile, 'cards_front_side', selectedFront, ref);
+      } catch (e) {
+        showSnackBar('Error with uploading card front side');
+        return;
+      }
+      try {
+        await upload(logoFile, 'cards_logo', selectedLogo, ref);
+      } catch (e) {
+        showSnackBar('Error with uploading logo');
+        return;
+      }
+      try {
+        await upload(backFile, 'cards_back_side', selectedBack, ref);
+      } catch (e) {
+        showSnackBar('Error with uploading card back side');
+        return;
+      }
+
       await ref
           .read(createDiscountCardProvider.notifier)
           .createCard(controller, selectedLogo, selectedFront!, selectedBack);
       if (mounted) {
-        showSnackBar('Card added successfully!');
-      } else {
-        showSnackBar('Something went wrong!');
+        clearFields();
       }
     } else {
-      showSnackBar('Something went wrong!');
+      showSnackBar('Select all fields');
     }
+  }
+
+  void clearFields() {
+    ref.read(selectedShopLogo.notifier).state = null;
+    ref.read(selectedCardFrontSide.notifier).state = null;
+    ref.read(selectedCardBackSide.notifier).state = null;
+    controller.shopTitleController.clear();
+    controller.notesController.clear();
   }
 
   @override
@@ -67,7 +93,9 @@ class _AddCardScreenState extends ConsumerState<AddCardScreen> {
     checkStatusOfAction();
     return Scaffold(
       appBar: AppBar(title: Text('Add new card!')),
-      body: AddCardForm(controllers: controller, onButtonPressed: addCard),
+      body: SingleChildScrollView(
+        child: AddCardForm(controllers: controller, onButtonPressed: addCard),
+      ),
     );
   }
 }

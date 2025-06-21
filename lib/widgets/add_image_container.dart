@@ -16,6 +16,7 @@ class AddPhotoContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
+      width: 300,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
         border: Border.all(color: theme.colorScheme.primary, width: 4),
@@ -23,7 +24,7 @@ class AddPhotoContainer extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.add_a_photo, size: 30),
+          Icon(Icons.add_photo_alternate_outlined, size: 45),
           ElevatedButton.icon(
             onPressed: onButtonTap,
             icon: Icon(icon),

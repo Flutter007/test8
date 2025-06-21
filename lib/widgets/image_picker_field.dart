@@ -53,18 +53,17 @@ class _ImagePickerFieldState extends ConsumerState<ImagePickerField> {
         )
         : LayoutBuilder(
           builder: (ctx, constraints) {
-            final width = constraints.maxWidth - 80;
+            final width = constraints.maxWidth;
             return SizedBox(
-              width: width,
-              height: width,
+              width: width / 2,
+              height: width / 2,
               child: Stack(
                 children: [
                   Image.file(
                     image,
                     width: width,
                     height: width,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
+                    fit: BoxFit.fill,
                   ),
                   Positioned(
                     bottom: 3,

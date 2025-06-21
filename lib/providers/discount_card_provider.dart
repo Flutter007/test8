@@ -5,6 +5,7 @@ import 'package:test8/models/discount_card.dart';
 import 'package:test8/widgets/add_card_form/add_card_form_controllers.dart';
 
 final supaBase = Supabase.instance.client;
+
 final discountCardsListProvider = FutureProvider<List<DiscountCard>>((
   ref,
 ) async {
@@ -20,6 +21,7 @@ final discountCardsListProvider = FutureProvider<List<DiscountCard>>((
 class CreateDiscountCardProvider extends AsyncNotifier<void> {
   @override
   build() {}
+
   Future<void> createCard(
     AddCardFormControllers controller,
     String? logoFileName,
@@ -35,7 +37,7 @@ class CreateDiscountCardProvider extends AsyncNotifier<void> {
         shopLogoURL: logoFileName,
         cardFrontSideImageURL: frontFileName,
         cardBackSideImageURL: backFileName,
-        notes: notes,
+        notes: notes.isEmpty ? null : notes,
       );
       await supaBase.from('discount_cards').insert(card.toJson());
     });
@@ -46,3 +48,12 @@ final createDiscountCardProvider =
     AsyncNotifierProvider<CreateDiscountCardProvider, void>(
       CreateDiscountCardProvider.new,
     );
+
+final singleCardProvider = FutureProvider.family<DiscountCard?, String>((
+  ref,
+  cardId,
+) async {
+  final card =
+      await supaBase.from('discount_cards').select().eq('id', cardId).single();
+  return DiscountCard.fromJson(card);
+});

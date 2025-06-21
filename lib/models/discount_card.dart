@@ -31,7 +31,7 @@ class DiscountCard {
     return DiscountCard(
       id: json['id'],
       shopTitle: json['shopTitle'],
-      shopLogoURL: json['shopImageURL'],
+      shopLogoURL: json['shopLogoURL'],
       cardFrontSideImageURL: json['cardFrontSideImageURL'],
       cardBackSideImageURL: json['cardBackSideImageURL'],
       notes: json['notes'],
