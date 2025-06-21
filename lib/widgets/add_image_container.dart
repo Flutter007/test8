@@ -16,18 +16,21 @@ class AddPhotoContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
         border: Border.all(color: theme.colorScheme.primary, width: 4),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
-          Icon(Icons.add_a_photo, size: 100),
+          Icon(Icons.add_a_photo, size: 30),
           ElevatedButton.icon(
             onPressed: onButtonTap,
             icon: Icon(icon),
-            label: Text(label),
+            label: SizedBox(
+              width: 150,
+              child: Text(label, textAlign: TextAlign.center),
+            ),
           ),
         ],
       ),

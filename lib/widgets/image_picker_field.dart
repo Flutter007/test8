@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,25 +29,23 @@ class _ImagePickerFieldState extends ConsumerState<ImagePickerField> {
       source: source,
       preferredCameraDevice: CameraDevice.rear,
     );
-    if (imagePicker != null) {
+    if (imagePicker == null) {
       return;
     }
-    final image = File(imagePicker!.path);
-    setState(() {
-      ref.read(widget.imageProvider.notifier).state = image;
-    });
+    final image = File(imagePicker.path);
+
+    ref.read(widget.imageProvider.notifier).state = image;
   }
 
   void clearPhoto() {
-    setState(() {
-      ref.read(widget.imageProvider.notifier).state = null;
-    });
+    ref.read(widget.imageProvider.notifier).state = null;
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ref.read(widget.imageProvider) == null
+    final image = ref.watch(widget.imageProvider);
+    return image == null
         ? AddPhotoContainer(
           onButtonTap: () => pickImage(widget.source),
           icon: widget.icon,
@@ -63,7 +60,7 @@ class _ImagePickerFieldState extends ConsumerState<ImagePickerField> {
               child: Stack(
                 children: [
                   Image.file(
-                    ref.read(widget.imageProvider.notifier).state!,
+                    image,
                     width: width,
                     height: width,
                     fit: BoxFit.cover,

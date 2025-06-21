@@ -1,7 +1,7 @@
 class DiscountCard {
   final String? id;
   final String shopTitle;
-  final String? shopImageURL;
+  final String? shopLogoURL;
   final String cardFrontSideImageURL;
   final String? cardBackSideImageURL;
   final String? notes;
@@ -10,7 +10,7 @@ class DiscountCard {
   DiscountCard({
     this.id,
     required this.shopTitle,
-    required this.shopImageURL,
+    required this.shopLogoURL,
     required this.cardFrontSideImageURL,
     required this.cardBackSideImageURL,
     required this.notes,
@@ -20,7 +20,7 @@ class DiscountCard {
   Map<String, dynamic> toJson() {
     return {
       'shopTitle': shopTitle,
-      'shopImageURL': shopImageURL,
+      'shopLogoURL': shopLogoURL,
       'cardFrontSideImageURL': cardFrontSideImageURL,
       'cardBackSideImageURL': cardBackSideImageURL,
       'notes': notes,
@@ -31,7 +31,7 @@ class DiscountCard {
     return DiscountCard(
       id: json['id'],
       shopTitle: json['shopTitle'],
-      shopImageURL: json['shopImageURL'],
+      shopLogoURL: json['shopImageURL'],
       cardFrontSideImageURL: json['cardFrontSideImageURL'],
       cardBackSideImageURL: json['cardBackSideImageURL'],
       notes: json['notes'],
